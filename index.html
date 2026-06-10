@@ -1,25 +1,718 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hearing Aid & App Guides</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearing Aid & App Guide — Bayfields</title>
+<style>
+  /* ── Google Fonts ── */
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  /* ── Tokens ── */
+  :root {
+    --purple-900: #2d1b4e;
+    --purple-700: #5a3a8c;
+    --purple-600: #6b3fa0;
+    --purple-500: #7c4db8;
+    --purple-200: #c9b3e8;
+    --purple-100: #ede6f7;
+    --purple-50:  #f7f4fd;
+    --ink:        #1e1a2e;
+    --mid:        #4a4360;
+    --muted:      #7a7390;
+    --rule:       #e4ddf2;
+    --white:      #ffffff;
+    --accent:     #9b5de5;
+  }
+
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--purple-50);
+    color: var(--ink);
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── Screen: Header ── */
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--rule);
+    padding: 24px 32px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+
+  .logo-wrap img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+  }
+
+  .brand-text h1 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--purple-700);
+    line-height: 1;
+  }
+
+  .brand-text p {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+
+  /* ── Client details bar ── */
+  .client-bar {
+    width: 100%;
+    max-width: 860px;
+    margin: 20px auto 0;
+    padding: 14px 20px;
+    background: var(--purple-50);
+    border: 1px solid var(--rule);
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    align-items: flex-end;
+  }
+
+  .client-bar label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .client-bar input {
+    margin-top: 4px;
+    border: none;
+    border-bottom: 1.5px solid var(--purple-200);
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    padding: 4px 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .client-bar input:focus { border-bottom-color: var(--purple-600); }
+  .client-bar input::placeholder { color: var(--rule); }
+
+  /* ── Brand nav ── */
+  .brand-nav {
+    display: flex;
+    gap: 4px;
+    padding: 16px 0 0;
+    justify-content: center;
+  }
+
+  .brand-nav button {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 28px;
+    border: 1.5px solid var(--rule);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    background: var(--purple-50);
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    position: relative;
+    bottom: -1px;
+  }
+
+  .brand-nav button:hover { background: var(--purple-100); color: var(--purple-700); }
+
+  .brand-nav button.active {
+    background: var(--white);
+    color: var(--purple-700);
+    border-color: var(--rule);
+    border-bottom: 1.5px solid var(--white);
+    z-index: 1;
+  }
+
+  /* ── Print / PDF button ── */
+  .action-bar {
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 0 0;
+  }
+
+  .btn-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    background: var(--purple-700);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  .btn-print:hover { background: var(--purple-900); }
+  .btn-print svg { width: 14px; height: 14px; fill: currentColor; }
+
+  /* ── Main content ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+  }
+
+  .guide-panel {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 40px 44px;
+  }
+
+  .guide-panel h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--purple-900);
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--purple-200);
+    margin-bottom: 32px;
+  }
+
+  /* ── Section cards ── */
+  .guide-section {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0 28px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .guide-section:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .section-label {
+    padding-top: 2px;
+  }
+
+  .section-label h3 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple-600);
+    line-height: 1.4;
+  }
+
+  .section-label .icon {
+    width: 32px;
+    height: 32px;
+    background: var(--purple-100);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  .section-label .icon svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--purple-600);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .section-body {
+    font-size: 0.9rem;
+    color: var(--mid);
+    line-height: 1.75;
+  }
+
+  .section-body p { margin-bottom: 8px; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  .section-body ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .section-body ul li {
+    padding: 3px 0 3px 18px;
+    position: relative;
+  }
+
+  .section-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--purple-400, var(--purple-500));
+  }
+
+  .section-body ol {
+    padding-left: 20px;
+  }
+
+  .section-body ol li { padding: 3px 0; }
+
+  .section-body strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .step-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: var(--purple-50);
+    border-left: 3px solid var(--purple-500);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    padding: 16px;
+  }
+
+  /* ══════════════════════════════
+     PRINT STYLES
+  ══════════════════════════════ */
+  @media print {
+    body { background: #fff; font-size: 11pt; }
+
+    .site-header {
+      padding: 12px 24px 0;
+      border-bottom: 1.5pt solid var(--rule);
+    }
+
+    .brand-nav, .action-bar, .btn-print { display: none !important; }
+
+    .client-bar {
+      border-radius: 0;
+      border: none;
+      border-bottom: 1pt solid var(--rule);
+      padding: 8px 0 12px;
+      margin: 8px 0 0;
+    }
+
+    .client-bar label { font-size: 7pt; }
+    .client-bar input { font-size: 10pt; border-bottom-color: #999; }
+
+    main {
+      padding: 0;
+      max-width: 100%;
+    }
+
+    .guide-panel {
+      border: none;
+      border-radius: 0;
+      padding: 20px 0 0;
+      page-break-inside: avoid;
+    }
+
+    .guide-panel h2 {
+      font-size: 14pt;
+      margin-bottom: 16pt;
+    }
+
+    .guide-section {
+      grid-template-columns: 160px 1fr;
+      page-break-inside: avoid;
+      padding: 14px 0;
+    }
+
+    .section-label .icon { display: none; }
+
+    .section-body { font-size: 9.5pt; color: #333; }
+
+    .site-footer { display: none; }
+
+    .step-note { background: #f5f5f5; border-left-color: #555; }
+  }
+</style>
 </head>
 <body>
-    <header>
-        <div class="logo-container">
-            <h1>Bayfields</h1>
-            <p>OPTICIANS & AUDIOLOGISTS</p>
+
+<header class="site-header">
+  <div class="logo-wrap">
+    <img src="data:image/jpeg;base64,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" alt="Bayfields logo">
+    <div class="brand-text">
+      <h1>Bayfields</h1>
+      <p>Opticians &amp; Audiologists</p>
+    </div>
+  </div>
+
+  <div class="client-bar">
+    <label>Client Name
+      <input type="text" id="field-name" placeholder="e.g. John Smith" autocomplete="off">
+    </label>
+    <label>Date of Issue
+      <input type="text" id="field-date" placeholder="e.g. 10 June 2026" autocomplete="off">
+    </label>
+    <label>Hearing Aid Model
+      <input type="text" id="field-model" placeholder="e.g. Oticon Intent 1" autocomplete="off">
+    </label>
+    <label>Audiologist / Branch
+      <input type="text" id="field-branch" placeholder="e.g. Oxford Street" autocomplete="off">
+    </label>
+  </div>
+
+  <nav class="brand-nav">
+    <button id="btn-oticon"  onclick="loadGuide('oticon')"  class="active">Oticon</button>
+    <button id="btn-starkey" onclick="loadGuide('starkey')">Starkey</button>
+    <button id="btn-widex"   onclick="loadGuide('widex')">Widex</button>
+  </nav>
+</header>
+
+<main>
+  <div class="action-bar">
+    <button class="btn-print" onclick="window.print()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+      Print / Save as PDF
+    </button>
+  </div>
+  <div class="guide-panel" id="guide-content"></div>
+</main>
+
+<footer class="site-footer">
+  Bayfields Opticians &amp; Audiologists &nbsp;·&nbsp; bayfieldsopticians.co.uk
+</footer>
+
+<script>
+// ─────────────────────────────────────────
+// SVG icon snippets (stroke-based)
+// ─────────────────────────────────────────
+const icons = {
+  ear:     `<svg viewBox="0 0 24 24"><path d="M6 12a6 6 0 1 1 12 0c0 3-2 5-4 7a2 2 0 0 1-3.46-2"/><circle cx="12" cy="12" r="2"/></svg>`,
+  power:   `<svg viewBox="0 0 24 24"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64M12 2v10"/></svg>`,
+  tool:    `<svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+  filter:  `<svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>`,
+  phone:   `<svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`,
+  battery: `<svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="10" rx="1"/><path d="M22 11v2"/><line x1="6" y1="11" x2="6" y2="13"/><line x1="10" y1="11" x2="10" y2="13"/></svg>`,
+  location:`<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+};
+
+// ─────────────────────────────────────────
+// Guide data
+// ─────────────────────────────────────────
+const guides = {
+
+  oticon: {
+    title: "Oticon Hearing Aid &amp; App Guide",
+    sections: [
+      {
+        icon: "ear",
+        heading: "Ear Identification",
+        body: `
+          <p>Your hearing aids are colour-coded so you always know which side is which:</p>
+          <ul>
+            <li><strong>Left Ear</strong> — Blue marking</li>
+            <li><strong>Right Ear</strong> — Red marking</li>
+          </ul>
+        `
+      },
+      {
+        icon: "power",
+        heading: "Power &amp; Charging",
+        body: `
+          <p><strong>With the charger (recommended):</strong> Simply place your hearing aids in the charger to turn them off. Remove them and they power on automatically — no button required.</p>
+          <ul>
+            <li><strong>Amber light</strong> — Charging in progress</li>
+            <li><strong>Green light</strong> — Fully charged</li>
+          </ul>
+          <p><strong>Without the charger:</strong> Press and hold the button for <strong>3 seconds</strong> to turn off (amber light). Press and hold for <strong>2 seconds</strong> to turn on (green light).</p>
+        `
+      },
+      {
+        icon: "tool",
+        heading: "Daily Maintenance",
+        body: `
+          <ul>
+            <li><strong>Domes:</strong> Wipe the silicone dome each evening with a clean wipe. Replace the dome every <strong>3 months</strong>.</li>
+            <li><strong>Microphones:</strong> Use the brush and cloth to gently clean the microphone openings every couple of weeks.</li>
+          </ul>
+        `
+      },
+      {
+        icon: "filter",
+        heading: "Changing the Wax Filter",
+        body: `
+          <p>If the sound becomes quiet or muffled, the wax filter may need replacing.</p>
+          <ol>
+            <li>The tool provided has two ends: the <strong>empty side</strong> removes the old filter; the <strong>other side</strong> holds the new one.</li>
+            <li>Press the empty end into the filter in the wire to pull it out.</li>
+            <li>Push the new filter into the wire, then discard the tool.</li>
+          </ol>
+        `
+      },
+      {
+        icon: "phone",
+        heading: "Using the Oticon ON App",
+        body: `
+          <p><strong>Programs</strong> (if applicable): Swipe across the top of the app screen to switch between listening programmes.</p>
+          <p><strong>Volume:</strong> Slide up or tap <strong>(+)</strong> to increase, slide down or tap <strong>(–)</strong> to decrease.</p>
+          <p><strong>Mute &amp; split:</strong> Tap the speaker icon to mute. Tap the bars icon to adjust each ear independently.</p>
+          <p><strong>Equaliser:</strong> Tap the sliders icon to adjust sound pitch.</p>
+          <div class="step-note">If the sound feels 'tinny', try lowering the volume slightly or use the Equaliser to reduce the high frequencies. Tap <strong>Restore Default</strong> to reset at any time.</div>
+        `
+      },
+      {
+        icon: "battery",
+        heading: "Battery &amp; Status",
+        body: `
+          <p>Check the percentage and estimated hours remaining for both hearing aids directly in the app.</p>
+        `
+      },
+      {
+        icon: "location",
+        heading: "Find My Hearing Aids",
+        body: `
+          <p>The app displays the last known location where your aids were connected to your phone.</p>
+          <div class="step-note">Note: the app shows the <strong>last connected location</strong> only — it does not track your aids live if they have been moved after losing connection.</div>
+        `
+      }
+    ]
+  },
+
+  starkey: {
+    title: "Starkey Hearing Aid &amp; App Guide",
+    sections: [
+      {
+        icon: "ear",
+        heading: "Ear Identification",
+        body: `
+          <p>Your Starkey hearing aids are colour-coded for easy identification:</p>
+          <ul>
+            <li><strong>Left Ear</strong> — Blue marking or indicator</li>
+            <li><strong>Right Ear</strong> — Red marking or indicator</li>
+          </ul>
+        `
+      },
+      {
+        icon: "power",
+        heading: "Power &amp; Charging",
+        body: `
+          <p><strong>With the charger:</strong> Place your hearing aids securely in the Starkey charger. They will power down automatically and begin charging. Remove them when needed and they will switch on.</p>
+          <ul>
+            <li><strong>Solid red light</strong> — Charging</li>
+            <li><strong>Solid green light</strong> — Fully charged</li>
+            <li><strong>Flashing green</strong> — Ready to wear</li>
+          </ul>
+          <p><strong>Without the charger:</strong> Open and close the battery door (if applicable) to turn the aids on or off. For rechargeable models, press and hold the lower button for 3 seconds.</p>
+        `
+      },
+      {
+        icon: "tool",
+        heading: "Daily Maintenance",
+        body: `
+          <ul>
+            <li><strong>Domes &amp; tips:</strong> Wipe with a clean, dry cloth each evening. Replace domes every 2–3 months or sooner if sound quality drops.</li>
+            <li><strong>Microphone ports:</strong> Use the cleaning brush to gently remove any debris from the microphone openings weekly.</li>
+            <li><strong>Storage:</strong> When not in use, leave aids in the charger or an open case to allow airflow and prevent moisture build-up.</li>
+          </ul>
+        `
+      },
+      {
+        icon: "filter",
+        heading: "Changing the Wax Filter",
+        body: `
+          <p>Replace the wax guard when you notice a reduction in sound volume or clarity.</p>
+          <ol>
+            <li>Remove the hearing aid and locate the wax guard at the end of the receiver or dome.</li>
+            <li>Use the applicator tool: the <strong>empty end</strong> to pull out the old guard; the <strong>loaded end</strong> to insert the new one.</li>
+            <li>Gently press the new guard in until it clicks into place, then discard the tool.</li>
+          </ol>
+        `
+      },
+      {
+        icon: "phone",
+        heading: "Using the My Starkey App",
+        body: `
+          <p><strong>Home screen:</strong> Shows both hearing aids and their battery level at a glance. Tap either aid to adjust individually.</p>
+          <p><strong>Volume:</strong> Use the large slider on the home screen or the side buttons on your hearing aids.</p>
+          <p><strong>Memories / programmes:</strong> Swipe or tap the programme name to cycle between presets (e.g. Restaurant, Outdoors, Music).</p>
+          <p><strong>Edge Mode:</strong> Tap the Edge Mode button for automatic real-time sound optimisation in challenging environments.</p>
+          <p><strong>Thrive Wellness:</strong> Tracks your daily steps and active listening time via the built-in sensors.</p>
+          <div class="step-note">If aids disconnect from the app, toggle Bluetooth off and on again on your phone, then re-open the app. Ensure aids are charged above 20%.</div>
+        `
+      },
+      {
+        icon: "battery",
+        heading: "Battery &amp; Status",
+        body: `
+          <p>Battery percentage for each aid is shown on the My Starkey app home screen. A low-battery alert will sound in the aids and appear as a notification.</p>
+          <ul>
+            <li>A full charge typically lasts <strong>18–24 hours</strong> depending on streaming use.</li>
+            <li>Charge for a minimum of <strong>3.5 hours</strong> for a full charge.</li>
+          </ul>
+        `
+      },
+      {
+        icon: "location",
+        heading: "Find My Hearing Aids",
+        body: `
+          <p>The My Starkey app includes a Find My Hearing Aids feature that shows the last Bluetooth-connected location on a map.</p>
+          <div class="step-note">This shows the last <strong>connected location</strong> only. If the aids were moved after disconnecting from your phone, the map will not update automatically.</div>
+        `
+      }
+    ]
+  },
+
+  widex: {
+    title: "Widex Hearing Aid &amp; App Guide",
+    sections: [
+      {
+        icon: "ear",
+        heading: "Ear Identification",
+        body: `
+          <p>Your Widex hearing aids are clearly marked for each ear:</p>
+          <ul>
+            <li><strong>Left Ear</strong> — Blue marking</li>
+            <li><strong>Right Ear</strong> — Red marking</li>
+          </ul>
+        `
+      },
+      {
+        icon: "power",
+        heading: "Power &amp; Charging",
+        body: `
+          <p><strong>With the charger:</strong> Place each hearing aid into the correct slot in the Widex charging case, ensuring they click into position. They will power off and begin charging automatically.</p>
+          <ul>
+            <li><strong>Red/orange light</strong> — Charging</li>
+            <li><strong>Green light</strong> — Fully charged</li>
+          </ul>
+          <p><strong>Without the charger:</strong> Press and hold the programme button for approximately 3 seconds to power off. To power on, insert into the ear — the aid will start up automatically, or press and hold the button briefly.</p>
+        `
+      },
+      {
+        icon: "tool",
+        heading: "Daily Maintenance",
+        body: `
+          <ul>
+            <li><strong>Domes:</strong> Wipe with a soft, dry cloth or cleaning wipe each evening. Replace every <strong>2–3 months</strong>.</li>
+            <li><strong>Microphone ports:</strong> Gently brush microphone openings weekly with the cleaning tool provided.</li>
+            <li><strong>Moisture care:</strong> Leave aids in an open case or drying box overnight — avoid bathrooms or humid areas.</li>
+          </ul>
+        `
+      },
+      {
+        icon: "filter",
+        heading: "Changing the Wax Filter",
+        body: `
+          <p>Replace the CeruStop™ wax guard if sound becomes reduced or muffled.</p>
+          <ol>
+            <li>Use the white stick tool from the pack: one end removes the old filter, the other holds the new one.</li>
+            <li>Insert the <strong>empty end</strong> into the current filter and pull out firmly.</li>
+            <li>Flip the tool and press the <strong>new filter</strong> into the receiver opening until seated. Discard the tool.</li>
+          </ol>
+          <div class="step-note">Wax filters are available from your Bayfields audiologist or can be ordered for home delivery.</div>
+        `
+      },
+      {
+        icon: "phone",
+        heading: "Using the Widex Moment App",
+        body: `
+          <p><strong>Home screen:</strong> Displays current programme and real-time sound environment. Both hearing aids are shown with individual battery levels.</p>
+          <p><strong>Volume:</strong> Drag the central slider up or down, or tap the <strong>+</strong> / <strong>–</strong> buttons. Adjust each ear independently by tapping the split icon.</p>
+          <p><strong>Sound programmes:</strong> Swipe left or right along the programme bar to switch (e.g. Universal, Music, Party, Outdoors).</p>
+          <p><strong>Sound Sense Learn:</strong> When prompted, rate your sound experience with a thumbs up or down — the app learns your preferences over time.</p>
+          <p><strong>Equaliser (SoundShaper):</strong> Fine-tune treble, mid, and bass in the sound profile settings.</p>
+          <div class="step-note">If the app loses connection, close and reopen it. Ensure Bluetooth is enabled and the aids are powered on and within range (approx. 10 metres).</div>
+        `
+      },
+      {
+        icon: "battery",
+        heading: "Battery &amp; Status",
+        body: `
+          <p>Live battery percentage for each aid is shown on the Widex Moment app home screen. You will receive an in-app and in-ear alert when battery drops below 20%.</p>
+          <ul>
+            <li>Full charge typically provides <strong>16–37 hours</strong> of use (varies by streaming).</li>
+            <li>A 30-minute quick charge gives approximately <strong>6 hours</strong> of use.</li>
+          </ul>
+        `
+      },
+      {
+        icon: "location",
+        heading: "Find My Hearing Aids",
+        body: `
+          <p>The Widex Moment app can show the last location where your aids were connected to your smartphone — helpful if you have misplaced them at home or while out.</p>
+          <div class="step-note">Location accuracy depends on your phone's Bluetooth connection at the time. The map shows the <strong>last connected position</strong> only and does not update in real time.</div>
+        `
+      }
+    ]
+  }
+};
+
+// ─────────────────────────────────────────
+// Render
+// ─────────────────────────────────────────
+function loadGuide(brand) {
+  const container = document.getElementById('guide-content');
+  const data = guides[brand];
+
+  document.querySelectorAll('.brand-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + brand).classList.add('active');
+
+  let html = `<h2>${data.title}</h2>`;
+  data.sections.forEach(sec => {
+    html += `
+      <div class="guide-section">
+        <div class="section-label">
+          <div class="icon">${icons[sec.icon] || icons.tool}</div>
+          <h3>${sec.heading}</h3>
         </div>
-        <nav>
-            <button onclick="loadGuide('oticon')" id="btn-oticon" class="active">Oticon</button>
-            <button onclick="loadGuide('starkey')" id="btn-starkey">Starkey</button>
-            <button onclick="loadGuide('widex')" id="btn-widex">Widex</button>
-        </nav>
-    </header>
-    <main id="guide-content">
-        </main>
-    <script src="script.js"></script>
+        <div class="section-body">${sec.body}</div>
+      </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+window.onload = () => loadGuide('oticon');
+</script>
 </body>
 </html>
